@@ -70,6 +70,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
+    "@iconify/types": "^1.0.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "styled-components": "^5.1.1"

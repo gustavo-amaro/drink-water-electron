@@ -3,6 +3,9 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   font-size: 40px;
+  .icon{
+        color: ${props => props.theme.colors.primary};
+    }
 `
 
 export const InfoContainer = styled.div`

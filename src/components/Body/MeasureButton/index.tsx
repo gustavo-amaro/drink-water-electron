@@ -1,21 +1,27 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
+
+import { Icon } from '@iconify/react'
 
 import { Container, InfoContainer } from './styles'
 
+import { IconifyIcon } from '@iconify/types'
+
 interface MeasureButtonProps {
-  Icon: ReactNode;
+  icon: IconifyIcon;
   measure: number;
   type: string;
 }
 
 const MeasureButton: React.FC<MeasureButtonProps> = ({
-  Icon,
+  icon,
   measure,
   type
 }) => {
   return (
     <Container>
-      <Icon />
+      <span className="icon">
+        <Icon icon={icon} />
+      </span>
       <InfoContainer>
         <h1>{measure}ml</h1>
         <span>{type}</span>

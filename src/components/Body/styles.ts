@@ -7,4 +7,12 @@ export const Container = styled.div`
   height: 161px;
   background: white;
   margin-top: -70px;
+  flex-direction: column;
+  justify-content: space-evenly;
+`
+
+export const MeasureWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
 `
