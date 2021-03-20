@@ -28,6 +28,8 @@
     "@commitlint/cli": "^9.0.1",
     "@commitlint/config-conventional": "^9.0.1",
     "@commitlint/core": "^9.0.1",
+    "@iconify/icons-mdi": "^1.1.13",
+    "@iconify/react": "^1.1.4",
     "@testing-library/jest-dom": "^5.11.0",
     "@testing-library/react": "^10.4.3",
     "@types/electron-devtools-installer": "^2.2.0",
