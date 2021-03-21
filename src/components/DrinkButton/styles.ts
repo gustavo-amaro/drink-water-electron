@@ -13,4 +13,8 @@ export const Container = styled.button`
   justify-content: center;
   margin-top: 20px;
   cursor: pointer;
+  outline: none;
+  &:active{
+    outline: none;
+  }
 `

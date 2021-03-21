@@ -1,5 +1,7 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { MdCheckBoxOutlineBlank, MdClose, MdRemove } from 'react-icons/md'
+
+import AnimatedNumber from 'react-animated-number'
 
 import { remote } from 'electron'
 import os from 'os'
@@ -12,8 +14,11 @@ import {
   QuatityContainer
 } from './styles'
 import ProgressWave from './ProgressWave'
+import { AppContext } from '../../context/AppContext'
 
 const Header: React.FC = () => {
+  const context = useContext(AppContext)
+
   const handleCloseWindow = useCallback(() => {
     const window = remote.getCurrentWindow()
 
@@ -62,11 +67,24 @@ const Header: React.FC = () => {
       <QuatityContainer>
         <QuantityInfo>
           <span>Faltam:</span>
-          <span className="quantity">1200ml</span>
+          <span className="quantity">
+            <AnimatedNumber
+              style={{
+                transition: '0.8s ease-out',
+                transitionProperty: 'background-color, color, opacity',
+                fontSize: 24
+              }}
+              value={context?.waterRemaining}
+              formatValue={(n: number) => `${n}`}
+              duration={500}
+              stepPrecision={0}
+            />
+            ml
+          </span>
         </QuantityInfo>
         <QuantityInfo>
           <span>Meta:</span>
-          <span className="quantity">2805ml</span>
+          <span className="quantity">{context?.waterGoal}ml</span>
         </QuantityInfo>
       </QuatityContainer>
     </Container>

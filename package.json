@@ -73,6 +73,7 @@
     "@ahwui/react-wave": "0.0.6",
     "@iconify/types": "^1.0.6",
     "react": "^16.13.1",
+    "react-animated-number": "^0.4.4",
     "react-dom": "^16.13.1",
     "react-icons": "^4.2.0",
     "styled-components": "^5.1.1"

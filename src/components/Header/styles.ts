@@ -40,6 +40,7 @@ export const QuantityInfo = styled.div`
   }
   .quantity{
     font-size: 24px;
+    transition: all 3s;
   }
 `
 

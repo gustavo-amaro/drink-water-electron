@@ -19,4 +19,7 @@ export const ProgressInfoContainer = styled.div`
     span.description{
         font-size: 18px;
     }
+    span {
+      transition: all .4s;
+    }
 `
