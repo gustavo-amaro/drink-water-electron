@@ -20,7 +20,7 @@ const MeasureButton: React.FC<MeasureButtonProps> = ({
 }) => {
   const appContext = useContext(AppContext)
   return (
-    <Container onClick={() => appContext?.setMeasure(measure)}>
+    <Container onClick={() => appContext?.changeMeasure(measure)}>
       <span className="icon">
         <Icon icon={icon} />
       </span>

@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
+import { MdAssignmentInd } from 'react-icons/md'
 
 let mainWindow: Electron.BrowserWindow | null
 

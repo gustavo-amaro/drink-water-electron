@@ -72,6 +72,8 @@
   "dependencies": {
     "@ahwui/react-wave": "0.0.6",
     "@iconify/types": "^1.0.6",
+    "electron-store": "^7.0.2",
+    "json-schema-typed": "^7.0.3",
     "react": "^16.13.1",
     "react-animated-number": "^0.4.4",
     "react-dom": "^16.13.1",
