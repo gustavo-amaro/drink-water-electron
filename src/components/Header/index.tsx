@@ -1,15 +1,17 @@
 import React, { useCallback } from 'react'
-import {
-  MdCheckBox,
-  MdCheckBoxOutlineBlank,
-  MdClose,
-  MdRemove
-} from 'react-icons/md'
+import { MdCheckBoxOutlineBlank, MdClose, MdRemove } from 'react-icons/md'
 
 import { remote } from 'electron'
 import os from 'os'
 
-import { Container, ActionButton, ActionContainer } from './styles'
+import {
+  Container,
+  ActionButton,
+  ActionContainer,
+  QuantityInfo,
+  QuatityContainer
+} from './styles'
+import ProgressWave from './ProgressWave'
 
 const Header: React.FC = () => {
   const handleCloseWindow = useCallback(() => {
@@ -54,6 +56,19 @@ const Header: React.FC = () => {
           <MdClose />
         </ActionButton>
       </ActionContainer>
+
+      <ProgressWave />
+
+      <QuatityContainer>
+        <QuantityInfo>
+          <span>Faltam:</span>
+          <span className="quantity">1200ml</span>
+        </QuantityInfo>
+        <QuantityInfo>
+          <span>Meta:</span>
+          <span className="quantity">2805ml</span>
+        </QuantityInfo>
+      </QuatityContainer>
     </Container>
   )
 }

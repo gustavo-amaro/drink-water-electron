@@ -4,6 +4,10 @@ export const Container = styled.div`
   display: flex;
   font-size: 40px;
   cursor: pointer;
+  outline: none;
+  &:active{
+      outline: none;
+  }
   .icon{
         color: ${props => props.theme.colors.primary};
     }

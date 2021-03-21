@@ -9,6 +9,8 @@ export const Container = styled.div`
   margin-top: -70px;
   flex-direction: column;
   justify-content: space-evenly;
+  -webkit-app-region: no-drag;
+  z-index:2;
 `
 
 export const MeasureWrapper = styled.div`
