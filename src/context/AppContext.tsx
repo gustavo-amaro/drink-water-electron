@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron'
 import React, { createContext, useEffect, useState } from 'react'
 
 interface AppContextType {
@@ -39,6 +40,10 @@ const AppProvider: React.FC = ({ children }) => {
     })
 
     localStorage.setItem('registersDays', JSON.stringify(registersDays))
+
+    setTimeout(() => {
+      ipcRenderer.send('send-notification', 'Hora de beber água', 'seus rins são preciosos!')
+    }, 3600)
   }
 
   function changeMeasure (measure: number) {

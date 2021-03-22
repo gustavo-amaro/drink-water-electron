@@ -1,8 +1,7 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain, Notification } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
-import { MdAssignmentInd } from 'react-icons/md'
 
 let mainWindow: Electron.BrowserWindow | null
 
@@ -36,6 +35,14 @@ function createWindow () {
     mainWindow = null
   })
 }
+
+ipcMain.on('send-notification', (event, title, body) => {
+  const notification = {
+    title,
+    body
+  }
+  new Notification(notification).show()
+})
 
 app.on('ready', createWindow)
   .whenReady()
