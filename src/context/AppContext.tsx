@@ -18,6 +18,7 @@ const AppProvider: React.FC = ({ children }) => {
   const [waterGoal, setWaterGoal] = useState(3000)
   const [waterConsumption, setWaterConsumption] = useState(0)
   const [measure, setMeasure] = useState(300)
+  const [registersDays, setRegistersDays] = useState({})
 
   function increaseConsumption () {
     setWaterRemaining((value) => {
@@ -35,9 +36,9 @@ const AppProvider: React.FC = ({ children }) => {
     const currentDate = getFormattedDate()
     registersDays[currentDate].push({
       datetime: new Date(),
-      consuption: measure
+      consumption: measure
     })
-
+    setRegistersDays(registersDays)
     ipcRenderer.send('store-set', 'registersDays', registersDays)
 
     setTimeout(() => {
@@ -83,6 +84,7 @@ const AppProvider: React.FC = ({ children }) => {
         setWaterConsumption(waterConsumption)
         setWaterRemaining(waterRemaining)
       }
+      setRegistersDays(registersDays)
     } else {
       setWaterConsumption(0)
       setWaterRemaining(waterGoal)
@@ -93,7 +95,7 @@ const AppProvider: React.FC = ({ children }) => {
       const registersDays = {
         [currentDate]: []
       }
-
+      setRegistersDays(registersDays)
       ipcRenderer.send('store-set', 'registersDays', registersDays)
     }
   }, [waterGoal])
@@ -103,9 +105,11 @@ const AppProvider: React.FC = ({ children }) => {
     waterGoal,
     waterConsumption,
     measure,
+    registersDays,
     increaseConsumption,
     setWaterGoal,
-    changeMeasure
+    changeMeasure,
+    getFormattedDate
   }
 
   return (
