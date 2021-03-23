@@ -14,32 +14,31 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | null>(null)
 
 const AppProvider: React.FC = ({ children }) => {
-  const [waterRemaining, setWaterRemaining] = useState(1200)
+  const [waterRemaining, setWaterRemaining] = useState(0)
   const [waterGoal, setWaterGoal] = useState(3000)
-  const [waterConsumption, setWaterConsumption] = useState(1800)
+  const [waterConsumption, setWaterConsumption] = useState(0)
   const [measure, setMeasure] = useState(300)
 
   function increaseConsumption () {
     setWaterRemaining((value) => {
       const newState = value > measure ? value - measure : 0
-      localStorage.setItem('waterRemaining', newState)
+      ipcRenderer.send('store-set', 'waterRemaining', newState)
       return newState
     })
     setWaterConsumption((value) => {
       const newState = value + measure
-      localStorage.setItem('waterConsumption', newState)
+      ipcRenderer.send('store-set', 'waterConsumption', newState)
       return newState
     })
-    const registersDays = JSON.parse(
-      localStorage.getItem('registersDays') ?? '{}'
-    )
+    const registersDays = ipcRenderer.sendSync('store-get', 'registersDays') ?? {}
+
     const currentDate = getFormattedDate()
     registersDays[currentDate].push({
       datetime: new Date(),
       consuption: measure
     })
 
-    localStorage.setItem('registersDays', JSON.stringify(registersDays))
+    ipcRenderer.send('store-set', 'registersDays', registersDays)
 
     setTimeout(() => {
       ipcRenderer.send('send-notification', 'Hora de beber água', 'seus rins são preciosos!')
@@ -48,7 +47,7 @@ const AppProvider: React.FC = ({ children }) => {
 
   function changeMeasure (measure: number) {
     setMeasure(measure)
-    localStorage.setItem('measure', measure)
+    ipcRenderer.send('store-set', 'measure', measure)
   }
 
   function getFormattedDate (): string {
@@ -60,30 +59,26 @@ const AppProvider: React.FC = ({ children }) => {
   }
 
   useEffect(() => {
-    const measure = parseInt(localStorage.getItem('measure') ?? '300')
+    const measure = ipcRenderer.sendSync('store-get', 'measure') ?? 300
     if (measure) setMeasure(measure)
 
-    const waterConsumption = parseInt(
-      localStorage.getItem('waterConsumption') ?? '0'
-    )
-    const waterRemaining = parseInt(
-      localStorage.getItem('waterRemaining') || '0'
-    )
+    const waterConsumption = ipcRenderer.sendSync('store-get', 'waterConsumption') ?? 0
+
+    const waterRemaining = ipcRenderer.sendSync('store-get', 'waterRemaining') ?? 0
 
     const currentDate = getFormattedDate()
 
-    const registersDaysString = localStorage.getItem('registersDays')
+    const registersDays = ipcRenderer.sendSync('store-get', 'registersDays')
 
-    if (registersDaysString) {
-      const registersDays = JSON.parse(registersDaysString)
+    if (registersDays) {
       if (!registersDays[currentDate]) {
         setWaterConsumption(0)
         setWaterRemaining(waterGoal)
-        localStorage.setItem('waterConsumption', '0')
-        localStorage.setItem('waterRemaning', waterGoal)
+        ipcRenderer.send('store-set', 'waterConsumption', 0)
+        ipcRenderer.send('store-set', 'waterRemaining', waterGoal)
 
         registersDays[currentDate] = []
-        localStorage.setItem('registersDays', JSON.stringify(registersDays))
+        ipcRenderer.send('store-set', 'registersDays', registersDays)
       } else {
         setWaterConsumption(waterConsumption)
         setWaterRemaining(waterRemaining)
@@ -91,14 +86,15 @@ const AppProvider: React.FC = ({ children }) => {
     } else {
       setWaterConsumption(0)
       setWaterRemaining(waterGoal)
-      localStorage.setItem('waterConsumption', '0')
-      localStorage.setItem('waterRemaning', waterGoal)
 
-      const registersDays = JSON.stringify({
+      ipcRenderer.send('store-set', 'waterConsumption', 0)
+      ipcRenderer.send('store-set', 'waterRemaining', waterGoal)
+
+      const registersDays = {
         [currentDate]: []
-      })
+      }
 
-      localStorage.setItem('registersDays', registersDays)
+      ipcRenderer.send('store-set', 'registersDays', registersDays)
     }
   }, [waterGoal])
 

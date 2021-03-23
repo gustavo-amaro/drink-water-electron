@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, Notification } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
+import Store from 'electron-store'
 
 let mainWindow: Electron.BrowserWindow | null
 
@@ -42,6 +43,16 @@ ipcMain.on('send-notification', (event, title, body) => {
     body
   }
   new Notification(notification).show()
+})
+
+ipcMain.on('store-set', (event, key, value) => {
+  const store = new Store()
+  store.set(key, value)
+})
+
+ipcMain.on('store-get', (event, key) => {
+  const store = new Store()
+  event.returnValue = store.get(key)
 })
 
 app.on('ready', createWindow)
