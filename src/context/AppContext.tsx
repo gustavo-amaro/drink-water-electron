@@ -1,14 +1,21 @@
 import { ipcRenderer } from 'electron'
 import React, { createContext, useEffect, useState } from 'react'
 
+interface DrinkRegister {
+  datetime: string;
+  consumption: number;
+}
+
 interface AppContextType {
   waterRemaining: number;
   waterGoal: number;
   waterConsumption: number;
   measure: number;
-  changeMeasure(measure: number): () => void;
+  changeMeasure(measure: number): void;
   setWaterGoal: React.SetStateAction<number>;
-  increaseConsumption(): () => void;
+  increaseConsumption(): void;
+  getFormattedDate(): string;
+  registersDays: Array<Array<DrinkRegister>>;
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -31,7 +38,8 @@ const AppProvider: React.FC = ({ children }) => {
       ipcRenderer.send('store-set', 'waterConsumption', newState)
       return newState
     })
-    const registersDays = ipcRenderer.sendSync('store-get', 'registersDays') ?? {}
+    const registersDays =
+      ipcRenderer.sendSync('store-get', 'registersDays') ?? {}
 
     const currentDate = getFormattedDate()
     registersDays[currentDate].push({
@@ -42,8 +50,12 @@ const AppProvider: React.FC = ({ children }) => {
     ipcRenderer.send('store-set', 'registersDays', registersDays)
 
     setTimeout(() => {
-      ipcRenderer.send('send-notification', 'Hora de beber água', 'seus rins são preciosos!')
-    }, 3600)
+      ipcRenderer.send(
+        'send-notification',
+        'Hora de beber água',
+        'seus rins são preciosos!'
+      )
+    }, 1000 * 60 * 60)
   }
 
   function changeMeasure (measure: number) {
@@ -63,9 +75,11 @@ const AppProvider: React.FC = ({ children }) => {
     const measure = ipcRenderer.sendSync('store-get', 'measure') ?? 300
     if (measure) setMeasure(measure)
 
-    const waterConsumption = ipcRenderer.sendSync('store-get', 'waterConsumption') ?? 0
+    const waterConsumption =
+      ipcRenderer.sendSync('store-get', 'waterConsumption') ?? 0
 
-    const waterRemaining = ipcRenderer.sendSync('store-get', 'waterRemaining') ?? 0
+    const waterRemaining =
+      ipcRenderer.sendSync('store-get', 'waterRemaining') ?? 0
 
     const currentDate = getFormattedDate()
 

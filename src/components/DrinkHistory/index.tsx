@@ -3,16 +3,26 @@ import { AppContext } from '../../context/AppContext'
 
 import { Container, HistoryItem } from './styles'
 
+interface DrinkRegister {
+  datetime: string;
+  consumption: number;
+}
+
 const DrinkHistory: React.FC = () => {
-  const { registersDays, getFormattedDate } = useContext(AppContext)
-  return <Container >
-    {registersDays[getFormattedDate()] && registersDays[getFormattedDate()].map((register) => (
-      <HistoryItem key={new Date(register.datetime).toLocaleTimeString()}>
-        <span className="consumption">{register.consumption}</span>
-        <span>{new Date(register.datetime).toLocaleTimeString()}</span>
-      </HistoryItem>
-    ))}
-  </Container>
+  const context = useContext(AppContext)
+  const formattedDate = context?.getFormattedDate()
+  return (
+    <Container>
+      {formattedDate &&
+        context?.registersDays[formattedDate] &&
+        context.registersDays[formattedDate].map((register: DrinkRegister) => (
+          <HistoryItem key={new Date(register.datetime).toLocaleTimeString()}>
+            <span className="consumption">{register.consumption}ml</span>
+            <span>{new Date(register.datetime).toLocaleTimeString()}</span>
+          </HistoryItem>
+        ))}
+    </Container>
+  )
 }
 
 export default DrinkHistory
