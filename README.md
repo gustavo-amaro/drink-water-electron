@@ -4,7 +4,7 @@ A simple and beautiful drink water app for desktop.
 
 ## Screenshot
 
-![screenshot]("https://github.com/gustavo-amaro/drink-water-electron/tree/master/screenshots/drink-water-electron.gif")
+![screenshot]("https://github.com/gustavo-amaro/drink-water-electron/blob/master/screenshots/drink-water-electron.gif")
 
 ## Installation
 
