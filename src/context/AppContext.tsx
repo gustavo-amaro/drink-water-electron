@@ -55,7 +55,7 @@ const AppProvider: React.FC = ({ children }) => {
         'Hora de beber água',
         'seus rins são preciosos!'
       )
-    }, 1000 * 60 * 60)
+    }, 1000 * 60 * 90)
   }
 
   function changeMeasure (measure: number) {
