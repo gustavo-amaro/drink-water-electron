@@ -29,7 +29,7 @@ export const ActionContainer = styled.div<ActionContainerProps>`
       background: #333; 
       color: white;
       button{
-        color: white;
+        color: ${props => props.shouldUseMacOSWindowActions ? '#333' : 'white'};
       }
     }
   }

@@ -1,10 +1,10 @@
-import { app, BrowserWindow, ipcMain, Notification } from 'electron'
+import { app, BrowserWindow, ipcMain, Notification, Menu, Tray, nativeImage } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
 import Store from 'electron-store'
 
-let mainWindow: Electron.BrowserWindow | null
+let mainWindow: BrowserWindow | null
 
 function createWindow () {
   mainWindow = new BrowserWindow({
@@ -55,6 +55,9 @@ ipcMain.on('store-get', (event, key) => {
   event.returnValue = store.get(key)
 })
 
+let tray: Tray
+let icons
+
 app.on('ready', createWindow)
   .whenReady()
   .then(() => {
@@ -66,5 +69,42 @@ app.on('ready', createWindow)
         .then((name) => console.log(`Added Extension:  ${name}`))
         .catch((err) => console.log('An error occurred: ', err))
     }
+
+    if (mainWindow) {
+      mainWindow.on('close', ev => {
+      // console.log(ev);
+        ev.sender.hide()
+        ev.preventDefault() // prevent quit process
+      })
+    }
+
+    tray = new Tray(nativeImage.createEmpty())
+    const menu = Menu.buildFromTemplate([
+      {
+        label: 'Drink Water',
+        click: (item, window, event) => {
+          if (mainWindow) { mainWindow.show() }
+        }
+      },
+      { type: 'separator' },
+      { role: 'quit' } // "role": system prepared action menu
+    ])
+    tray.setToolTip('Drink water electron')
+    // top.tray.setTitle("Tray Example"); // macOS only
+    tray.setContextMenu(menu)
+
+    // Option: some animated web site to tray icon image
+    // see: https://electron.atom.io/docs/tutorial/offscreen-rendering/
+    icons = new BrowserWindow({ show: false, webPreferences: { offscreen: true } })
+    icons.loadURL('https://cdn.iconscout.com/icon/free/png-512/electron-67-1175035.png')
+    icons.webContents.on('paint', (event, dirty, image) => {
+      if (tray) tray.setImage(image.resize({ width: 16, height: 16 }))
+    })
   })
+
+app.on('before-quit', ev => {
+  // BrowserWindow "close" event spawn after quit operation,
+  // it requires to clean up listeners for "close" event
+  if (mainWindow) mainWindow.removeAllListeners('close')
+})
 app.allowRendererProcessReuse = true
