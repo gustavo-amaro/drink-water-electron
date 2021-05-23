@@ -1,5 +1,6 @@
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import { MdCheckBoxOutlineBlank, MdClose, MdRemove } from 'react-icons/md'
+import { FiX, FiMinus, FiMaximize2 } from 'react-icons/fi'
 
 import AnimatedNumber from 'react-animated-number'
 
@@ -11,7 +12,8 @@ import {
   ActionButton,
   ActionContainer,
   QuantityInfo,
-  QuatityContainer
+  QuatityContainer,
+  MacActionButton
 } from './styles'
 import ProgressWave from './ProgressWave'
 import { AppContext } from '../../context/AppContext'
@@ -48,18 +50,37 @@ const Header: React.FC = () => {
     window.minimize()
   }, [])
 
+  const shouldUseMacOSWindowActions = useMemo(() => {
+    return os.platform() === 'darwin'
+  }, [])
+
   return (
     <Container>
-      <ActionContainer>
-        <ActionButton onClick={handleMinimize}>
-          <MdRemove />
-        </ActionButton>
-        <ActionButton onClick={handleMaximize}>
-          <MdCheckBoxOutlineBlank />
-        </ActionButton>
-        <ActionButton onClick={handleCloseWindow}>
-          <MdClose />
-        </ActionButton>
+      <ActionContainer shouldUseMacOSWindowActions={shouldUseMacOSWindowActions}>
+        {shouldUseMacOSWindowActions
+          ? <>
+            <MacActionButton color="close" onClick={handleCloseWindow}>
+              <FiX />
+            </MacActionButton>
+            <MacActionButton color="minimize" onClick={handleMinimize}>
+              <FiMinus />
+            </MacActionButton>
+            <MacActionButton color="maximize" onClick={handleMaximize}>
+              <FiMaximize2 />
+            </MacActionButton>
+          </>
+          : <>
+            <ActionButton onClick={handleMinimize}>
+              <MdRemove />
+            </ActionButton>
+            <ActionButton onClick={handleMaximize}>
+              <MdCheckBoxOutlineBlank />
+            </ActionButton>
+            <ActionButton onClick={handleCloseWindow}>
+              <MdClose />
+            </ActionButton>
+          </>
+        }
       </ActionContainer>
 
       <ProgressWave />
