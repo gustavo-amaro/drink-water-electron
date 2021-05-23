@@ -49,13 +49,10 @@ const AppProvider: React.FC = ({ children }) => {
     setRegistersDays(registersDays)
     ipcRenderer.send('store-set', 'registersDays', registersDays)
 
-    setTimeout(() => {
-      ipcRenderer.send(
-        'send-notification',
-        'Hora de beber água',
-        'seus rins são preciosos!'
-      )
-    }, 1000 * 60 * 90)
+    const date60MinutesLater = new Date()
+    date60MinutesLater.setTime(new Date().getTime() + (1000 * 60 * 1))
+    alert(date60MinutesLater)
+    ipcRenderer.send('register-schedule-job', date60MinutesLater)
   }
 
   function changeMeasure (measure: number) {

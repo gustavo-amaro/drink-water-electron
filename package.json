@@ -74,6 +74,7 @@
     "@iconify/types": "^1.0.6",
     "electron-store": "^7.0.2",
     "json-schema-typed": "^7.0.3",
+    "node-schedule": "^2.0.0",
     "react": "^16.13.1",
     "react-animated-number": "^0.4.4",
     "react-dom": "^16.13.1",

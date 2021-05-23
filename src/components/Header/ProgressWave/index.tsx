@@ -5,6 +5,7 @@ import AnimatedNumber from 'react-animated-number'
 
 import { Container, ProgressInfoContainer } from './styles'
 import { AppContext } from '../../../context/AppContext'
+import { ipcRenderer } from 'electron'
 
 const ProgressWave: React.FC = () => {
   const context = useContext(AppContext)
@@ -21,7 +22,7 @@ const ProgressWave: React.FC = () => {
     }
   }, [context])
   return (
-    <Container>
+    <Container >
       <Wave
         radius={100}
         progress={progress}

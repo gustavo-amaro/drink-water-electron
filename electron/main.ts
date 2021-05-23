@@ -3,6 +3,7 @@ import * as path from 'path'
 import * as url from 'url'
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
 import Store from 'electron-store'
+import schedule from 'node-schedule'
 
 let mainWindow: BrowserWindow | null
 
@@ -53,6 +54,16 @@ ipcMain.on('store-set', (event, key, value) => {
 ipcMain.on('store-get', (event, key) => {
   const store = new Store()
   event.returnValue = store.get(key)
+})
+
+ipcMain.on('register-schedule-job', (event, date) => {
+  const job = schedule.scheduleJob(date, function () {
+    const notification = {
+      title: 'Hora de beber água!',
+      body: 'Beba água!'
+    }
+    new Notification(notification).show()
+  })
 })
 
 let tray: Tray
