@@ -26,6 +26,7 @@ const AppProvider: React.FC = ({ children }) => {
   const [waterConsumption, setWaterConsumption] = useState(0)
   const [measure, setMeasure] = useState(300)
   const [registersDays, setRegistersDays] = useState({})
+  const [waterTimeInterval, setWaterTimerInterval] = useState(60)
 
   function increaseConsumption () {
     setWaterRemaining((value) => {
@@ -50,8 +51,7 @@ const AppProvider: React.FC = ({ children }) => {
     ipcRenderer.send('store-set', 'registersDays', registersDays)
 
     const date60MinutesLater = new Date()
-    date60MinutesLater.setTime(new Date().getTime() + (1000 * 60 * 1))
-    alert(date60MinutesLater)
+    date60MinutesLater.setTime(new Date().getTime() + (1000 * 60 * waterTimeInterval))
     ipcRenderer.send('register-schedule-job', date60MinutesLater)
   }
 

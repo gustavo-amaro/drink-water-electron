@@ -109,7 +109,7 @@ app.on('ready', createWindow)
     icons = new BrowserWindow({ show: false, webPreferences: { offscreen: true } })
     icons.loadURL('https://cdn.iconscout.com/icon/free/png-512/electron-67-1175035.png')
     icons.webContents.on('paint', (event, dirty, image) => {
-      if (tray) tray.setImage(image.resize({ width: 16, height: 16 }))
+      if (tray) tray.setImage(image.resize({ width: 32, height: 32 }))
     })
   })
 
